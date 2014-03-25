@@ -30,7 +30,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	private DrawerLayoutListFragment mDrawerLayoutListFragment;
 	private ActionBar mActionBar;
 	private ActionBarDrawerToggle mActionBarDrawerToggle;
-	private boolean isOpened = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		mFrameHoldingList = (FrameLayout)findViewById(R.id.fragmentList);
 		mActionBar = getSupportActionBar();
 		mActionBar.setTitle("");
+		mActionBar.setHomeButtonEnabled(true);
+		mActionBar.setDisplayHomeAsUpEnabled(false);
 		
 		setDrawerMenu();
 		
@@ -55,14 +56,13 @@ public class MainActivity extends SherlockFragmentActivity {
  
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
-            	isOpened = true;
+            	getSupportActionBar().setTitle("");
             	super.onDrawerClosed(view);
             }
  
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
             	getSupportActionBar().setTitle(getString(R.string.app_name));
-            	isOpened = false;
             	super.onDrawerOpened(drawerView);
             }
         };
@@ -117,7 +117,10 @@ public class MainActivity extends SherlockFragmentActivity {
 		
 		// Committing the transaction
 		ft.commit();
-		mDrawerLayout.closeDrawer(mFrameHoldingList);
+		
+		if(mDrawerLayout.isDrawerOpen(mFrameHoldingList)) {
+			mDrawerLayout.closeDrawer(mFrameHoldingList);
+		}
 	}
 	
 	@Override
@@ -129,7 +132,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			if(isOpened) {
+			if(mDrawerLayout.isDrawerOpen(mFrameHoldingList)) {
 				mDrawerLayout.closeDrawer(mFrameHoldingList);
 			}else {
 				mDrawerLayout.openDrawer(mFrameHoldingList);

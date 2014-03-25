@@ -35,6 +35,11 @@ public class DrawerLayoutListFragment extends Fragment implements OnItemClickLis
 				R.layout.individual_list_row, mDrawerMenuItems);
 		mDrawerList.setAdapter(mDrawerAdapter);
 		mDrawerList.setOnItemClickListener(this);
+		mDrawerList.setSelection(0);
+		
+		if(savedInstanceState == null) {
+			((MainActivity)getActivity()).addToStack(getString(R.string.about));
+		}
 	}
 
 	@Override
